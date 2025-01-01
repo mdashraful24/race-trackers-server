@@ -56,7 +56,7 @@ async function run() {
         const marathonsCollection = client.db('marathonRace').collection('marathons');
         const registrationsCollection = client.db('marathonRace').collection('registrations');
 
-        // Auth related APIs
+        // Auth related APIs (Token verify)
         app.post('/jwt', async (req, res) => {
             const user = req.body;
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
