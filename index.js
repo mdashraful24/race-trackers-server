@@ -99,6 +99,7 @@ async function run() {
             }
         });
 
+        // Marathon details
         app.get('/marathons/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
@@ -106,6 +107,7 @@ async function run() {
             res.send(result);
         });
 
+        // Apply marathon events
         app.get('/myApplyList', verifyToken, async (req, res) => {
             const title = req.query.title || '';
             const cursor = registrationsCollection.find({
