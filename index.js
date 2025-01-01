@@ -18,9 +18,9 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+// Token Verification
 const verifyToken = (req, res, next) => {
     const token = req?.cookies?.token;
-    // console.log('inside verify token middleware', req.cookies);
 
     if (!token) {
         return res.status(401).send({ message: 'Unauthorized access' })
@@ -35,7 +35,7 @@ const verifyToken = (req, res, next) => {
     })
 }
 
-
+// Database connect URI
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.p8flg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
@@ -52,7 +52,7 @@ async function run() {
         // await client.db("admin").command({ ping: 1 });
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
-        // Collections
+        // All Collections
         const marathonsCollection = client.db('marathonRace').collection('marathons');
         const registrationsCollection = client.db('marathonRace').collection('registrations');
 
