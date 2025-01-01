@@ -56,7 +56,6 @@ async function run() {
         const marathonsCollection = client.db('marathonRace').collection('marathons');
         const registrationsCollection = client.db('marathonRace').collection('registrations');
 
-
         // Auth related APIs
         app.post('/jwt', async (req, res) => {
             const user = req.body;
@@ -80,24 +79,23 @@ async function run() {
                 .send({ success: true })
         })
 
-
+        // Get marathons data
         app.get('/marathons', async (req, res) => {
-            // console.log('now inside the api callback');
             const cursor = marathonsCollection.find().limit(6);
             const result = await cursor.toArray();
             res.send(result);
         });
 
+        // Sorting section with marathon page
         app.get('/marathonPage', verifyToken, async (req, res) => {
-            // console.log("hello", req.cookies)
             try {
-                const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1; // Determine sorting order
-                const cursor = marathonsCollection.find().sort({ createdAt: sortOrder }); // Sort by createdAt field
-                const result = await cursor.toArray(); // Fetch results as an array
-                res.send(result); // Send the sorted results back to the client
+                const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
+                const cursor = marathonsCollection.find().sort({ createdAt: sortOrder });
+                const result = await cursor.toArray();
+                res.send(result);
             } catch (error) {
                 console.error('Error fetching marathons:', error);
-                res.status(500).send({ message: 'Failed to fetch marathons' }); // Handle errors
+                res.status(500).send({ message: 'Failed to fetch marathons' });
             }
         });
 
