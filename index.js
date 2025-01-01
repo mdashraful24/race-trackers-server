@@ -111,19 +111,20 @@ async function run() {
         app.get('/myApplyList', verifyToken, async (req, res) => {
             const title = req.query.title || '';
             const cursor = registrationsCollection.find({
-                title: { $regex: new RegExp(title, 'i') } // Case-insensitive search
+                title: { $regex: new RegExp(title, 'i') }
             });
             const result = await cursor.toArray();
             res.send(result);
         });
 
+        // Add marathons
         app.post('/addMarathons', async (req, res) => {
             const newMarathon = req.body;
-            // console.log(newMarathon);
             const result = await marathonsCollection.insertOne(newMarathon);
             res.send(result);
         })
 
+        // Registrations
         app.post("/registrations", async (req, res) => {
             const registration = req.body;
             const result = await registrationsCollection.insertOne(registration);
@@ -139,6 +140,7 @@ async function run() {
             res.send(result);
         });
 
+        // Apply list update
         app.put('/myApplyList/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
@@ -156,12 +158,13 @@ async function run() {
             res.send(result);
         })
 
+        // My marathon page update
         app.put('/marathonPage/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
             const options = { upsert: true };
             const updatedList = req.body;
-            const campaign = {
+            const events = {
                 $set: {
                     title: updatedList.title,
                     firstName: updatedList.firstName,
@@ -175,10 +178,11 @@ async function run() {
                     marathonImage: updatedList.marathonImage,
                 }
             }
-            const result = await marathonsCollection.updateOne(filter, campaign, options);
+            const result = await marathonsCollection.updateOne(filter, events, options);
             res.send(result);
         })
 
+        // Delete marathon in my marathon list
         app.delete('/marathonPage/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
@@ -186,6 +190,7 @@ async function run() {
             res.send(result);
         })
 
+        // Delete marathon in my apply list
         app.delete('/myApplyList/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
