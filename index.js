@@ -21,6 +21,7 @@ app.use(cookieParser());
 // Token Verification
 const verifyToken = (req, res, next) => {
     const token = req?.cookies?.token;
+    // console.log(token?.cookies);
 
     if (!token) {
         return res.status(401).send({ message: 'Unauthorized access' })
@@ -59,7 +60,7 @@ async function run() {
         // Auth related APIs (Token verify)
         app.post('/jwt', async (req, res) => {
             const user = req.body;
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10d' });
             res
                 .cookie('token', token, {
                     httpOnly: true,
@@ -100,7 +101,7 @@ async function run() {
         });
 
         // Marathon details
-        app.get('/marathons/:id', async (req, res) => {
+        app.get('/marathons/:id', verifyToken, async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await marathonsCollection.findOne(query);
