@@ -109,18 +109,11 @@ async function run() {
             res.send(result);
         });
 
-        // Sorting section with Marathon Page
-        // app.get('/marathonPage', async (req, res) => {
-        //     try {
-        //         const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
-        //         const cursor = marathonsCollection.find().sort({ createdAt: sortOrder });
-        //         const result = await cursor.toArray();
-        //         res.send(result);
-        //     } catch (error) {
-        //         console.error('Error fetching marathons:', error);
-        //         res.status(500).send({ message: 'Failed to fetch marathons' });
-        //     }
-        // });
+        app.get('/newMarathons', verifyToken, async (req, res) => {
+            const cursor = marathonsCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        });
 
         // Marathon Details
         app.get('/marathons/:id', verifyToken, async (req, res) => {
