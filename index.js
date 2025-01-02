@@ -103,24 +103,24 @@ async function run() {
             res.send(result);
         });
 
-        app.get('/allMarathons', async (req, res) => {
+        app.get('/allMarathons', verifyToken, async (req, res) => {
             const cursor = marathonsCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         });
 
         // Sorting section with Marathon Page
-        app.get('/marathonPage', verifyToken, async (req, res) => {
-            try {
-                const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
-                const cursor = marathonsCollection.find().sort({ createdAt: sortOrder });
-                const result = await cursor.toArray();
-                res.send(result);
-            } catch (error) {
-                console.error('Error fetching marathons:', error);
-                res.status(500).send({ message: 'Failed to fetch marathons' });
-            }
-        });
+        // app.get('/marathonPage', async (req, res) => {
+        //     try {
+        //         const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
+        //         const cursor = marathonsCollection.find().sort({ createdAt: sortOrder });
+        //         const result = await cursor.toArray();
+        //         res.send(result);
+        //     } catch (error) {
+        //         console.error('Error fetching marathons:', error);
+        //         res.status(500).send({ message: 'Failed to fetch marathons' });
+        //     }
+        // });
 
         // Marathon Details
         app.get('/marathons/:id', verifyToken, async (req, res) => {
