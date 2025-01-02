@@ -18,10 +18,19 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser());
 
+
+app.use((req, res, next) => {
+    // console.log('Headers:', req.headers);
+    console.log('Cookies:', req.cookies);
+    next();
+});
+
 // Token Verification
 const verifyToken = (req, res, next) => {
-    const token = req?.cookies?.token;
+    // const token = req?.cookies?.token;
     // console.log(token?.cookies);
+    const token = req?.cookies?.token;
+    console.log("Token: ", token);
 
     if (!token) {
         return res.status(401).send({ message: 'Unauthorized access' })
@@ -61,8 +70,15 @@ async function run() {
         app.post('/jwt', async (req, res) => {
             const user = req.body;
             const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10d' });
+            // res
+            // .cookie('token', token, {
+            //     httpOnly: true,
+            //     secure: process.env.NODE_ENV === 'production',
+            //     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+            // })
             res
                 .cookie('token', token, {
+
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
@@ -87,7 +103,13 @@ async function run() {
             res.send(result);
         });
 
-        // Sorting section with marathon page
+        app.get('/allMarathons', async (req, res) => {
+            const cursor = marathonsCollection.find();
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
+        // Sorting section with Marathon Page
         app.get('/marathonPage', verifyToken, async (req, res) => {
             try {
                 const sortOrder = req.query.sortOrder === 'asc' ? 1 : -1;
@@ -100,7 +122,7 @@ async function run() {
             }
         });
 
-        // Marathon details
+        // Marathon Details
         app.get('/marathons/:id', verifyToken, async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
@@ -108,7 +130,7 @@ async function run() {
             res.send(result);
         });
 
-        // Apply marathon events
+        // Apply Marathon Events
         app.get('/myApplyList', verifyToken, async (req, res) => {
             const title = req.query.title || '';
             const cursor = registrationsCollection.find({
@@ -118,8 +140,8 @@ async function run() {
             res.send(result);
         });
 
-        // Add marathons
-        app.post('/addMarathons', async (req, res) => {
+        // Add Marathons Events
+        app.post('/addMarathons', verifyToken, async (req, res) => {
             const newMarathon = req.body;
             const result = await marathonsCollection.insertOne(newMarathon);
             res.send(result);
@@ -141,7 +163,7 @@ async function run() {
             res.send(result);
         });
 
-        // Apply list update
+        // Apply List Update
         app.put('/myApplyList/:id', async (req, res) => {
             const id = req.params.id;
             const filter = { _id: new ObjectId(id) }
