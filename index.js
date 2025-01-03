@@ -27,8 +27,7 @@ app.use((req, res, next) => {
 
 // Token Verification
 const verifyToken = (req, res, next) => {
-    // const token = req?.cookies?.token;
-    // console.log(token?.cookies);
+
     const token = req?.cookies?.token;
     console.log("Token: ", token);
 
@@ -69,16 +68,9 @@ async function run() {
         // Auth related APIs (Token verify)
         app.post('/jwt', async (req, res) => {
             const user = req.body;
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10d' });
-            // res
-            // .cookie('token', token, {
-            //     httpOnly: true,
-            //     secure: process.env.NODE_ENV === 'production',
-            //     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-            // })
+            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30d' });
             res
                 .cookie('token', token, {
-
                     httpOnly: true,
                     secure: process.env.NODE_ENV === 'production',
                     sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
@@ -103,6 +95,7 @@ async function run() {
             res.send(result);
         });
 
+        // Marathon Page
         app.get('/allMarathons', verifyToken, async (req, res) => {
             const cursor = marathonsCollection.find();
             const result = await cursor.toArray();
@@ -116,7 +109,14 @@ async function run() {
         });
 
         // Marathon Details
-        app.get('/marathons/:id', verifyToken, async (req, res) => {
+        // app.get('/marathons/:id', verifyToken, async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: new ObjectId(id) };
+        //     const result = await marathonsCollection.findOne(query);
+        //     res.send(result);
+        // });
+
+        app.get('/allMarathons/:id', verifyToken, async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await marathonsCollection.findOne(query);
@@ -183,8 +183,8 @@ async function run() {
             const events = {
                 $set: {
                     title: updatedList.title,
-                    firstName: updatedList.firstName,
-                    lastName: updatedList.lastName,
+                    // firstName: updatedList.firstName,
+                    // lastName: updatedList.lastName,
                     number: updatedList.number,
                     startRegistrationDate: updatedList.startRegistrationDate,
                     endRegistrationDate: updatedList.endRegistrationDate,
