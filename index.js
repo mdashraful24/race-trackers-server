@@ -102,20 +102,14 @@ async function run() {
             res.send(result);
         });
 
+        // My Marathon List
         app.get('/newMarathons', verifyToken, async (req, res) => {
             const cursor = marathonsCollection.find();
             const result = await cursor.toArray();
             res.send(result);
         });
 
-        // Marathon Details
-        // app.get('/marathons/:id', verifyToken, async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: new ObjectId(id) };
-        //     const result = await marathonsCollection.findOne(query);
-        //     res.send(result);
-        // });
-
+        // All Marathons Data
         app.get('/allMarathons/:id', verifyToken, async (req, res) => {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
@@ -144,7 +138,6 @@ async function run() {
         app.post("/registrations", async (req, res) => {
             const registration = req.body;
             const result = await registrationsCollection.insertOne(registration);
-
             if (result.insertedId) {
                 // Update the total registration count
                 const title = registration.title;
@@ -183,9 +176,6 @@ async function run() {
             const events = {
                 $set: {
                     title: updatedList.title,
-                    // firstName: updatedList.firstName,
-                    // lastName: updatedList.lastName,
-                    number: updatedList.number,
                     startRegistrationDate: updatedList.startRegistrationDate,
                     endRegistrationDate: updatedList.endRegistrationDate,
                     marathonStartDate: updatedList.marathonStartDate,
