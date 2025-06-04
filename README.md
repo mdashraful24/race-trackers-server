@@ -28,7 +28,7 @@
 ## Installation & Running Locally
 
 1. Clone the repository:
-   ```bash
+```bash
    git clone <your-repo-url>
 ````
 
