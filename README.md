@@ -1,25 +1,73 @@
-Assignment Category: 06
-
-Project Theme: Marathon Management System
-
-# Website Name: RaceTrackers
+# RaceTrackers
 
 [Live Site](https://marathonproject-2a4f2.web.app/)
 
 ## About
-The **RaceTrackers** is a comprehensive platform designed to simplify the organization and participation process for marathon events. By connecting event organizers with participants, the system fosters seamless communication and efficient management of events.
+**RaceTrackers** is a comprehensive marathon management platform designed to streamline event organization and participation. It connects event organizers and participants, enabling efficient event creation, registration, and communication, all through a secure and user-friendly interface.
 
 ## Features
+- **Event Creation:** Organizers can create and customize marathon events with details like date, location, and participant limits.
+- **User Registration:** Participants can easily register for events via a simple and intuitive process.
+- **Personal Dashboard:** Users manage their event registrations, track event details, and receive updates.
+- **Secure Authentication:** User accounts are protected with JWT-based authentication and secure login.
+- **Responsive Design:** Fully optimized for desktops, tablets, and mobile devices to ensure accessibility.
 
-- **Event Creation:** Organizers can create and customize marathon events with details such as date, location, and participant limits.
-- **User Registration:** Participants can sign up for events through a user-friendly registration process.
-- **Personal Dashboard:** Users can view and manage their registrations, track event details, and stay updated on event announcements.
-- **Secure User Authentication:** The platform ensures secure login and data protection for both organizers and participants.
-- **Responsive Design:** The system is optimized for desktop, tablet, and mobile devices, ensuring accessibility for all users.
+## Technologies Used
+
+### Frontend
+- React.js
+- CSS / Tailwind CSS (if applicable)
 
 ### Backend
 - Node.js
 - Express.js
-- MongoDB (with Atlas)
-- JWT for authentication
-- dotenv for configuration
+- MongoDB Atlas
+- JSON Web Tokens (JWT) for authentication
+- dotenv for environment configuration
+
+## Installation & Running Locally
+
+1. Clone the repository:
+```bash
+   git clone <your-repo-url>
+````
+
+2. Navigate to the backend folder:
+
+   ```bash
+   cd backend
+   ```
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+4. Create a `.env` file with your configuration (e.g., MongoDB URI, JWT secret).
+5. Start the server:
+
+   ```bash
+   npm start
+   ```
+
+## Backend Dependencies
+
+```json
+{
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.12.0"
+  }
+}
+```
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+Build, manage, and track marathons effortlessly with **RaceTrackers**!
