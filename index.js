@@ -62,8 +62,13 @@ async function run() {
         // console.log("Pinged your deployment. You successfully connected to MongoDB!");
 
         // All Collections
-        const marathonsCollection = client.db('marathonRace').collection('marathons');
         const registrationsCollection = client.db('marathonRace').collection('registrations');
+        const marathonsCollection = client.db('marathonRace').collection('marathons');
+        const upcomingCollection = client.db('marathonRace').collection('upcoming');
+        const teamCollection = client.db('marathonRace').collection('teamMembers');
+        const reviewCollection = client.db('marathonRace').collection('reviews');
+        const servicesCollection = client.db('marathonRace').collection('services');
+        const sponsorsCollection = client.db('marathonRace').collection('sponsors');
 
         // Auth related APIs (Token verify)
         app.post('/jwt', async (req, res) => {
@@ -94,6 +99,41 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         });
+
+        // Get upcoming events
+        app.get('/events', async (req, res) => {
+            const events = upcomingCollection.find();
+            const result = await events.toArray();
+            res.send(result);
+        })
+
+        // Get team members
+        app.get('/members', async (req, res) => {
+            const members = teamCollection.find();
+            const result = await members.toArray();
+            res.send(result);
+        })
+
+        // Get reviews
+        app.get('/reviews', async (req, res) => {
+            const reviews = reviewCollection.find();
+            const result = await reviews.toArray();
+            res.send(result);
+        })
+
+        // Get services
+        app.get('/services', async (req, res) => {
+            const services = servicesCollection.find();
+            const result = await services.toArray();
+            res.send(result);
+        })
+
+        // Get services
+        app.get('/sponsors', async (req, res) => {
+            const sponsors = sponsorsCollection.find();
+            const result = await sponsors.toArray();
+            res.send(result);
+        })
 
         // Marathon Page
         app.get('/allMarathons', verifyToken, async (req, res) => {
