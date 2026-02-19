@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 app.use((req, res, next) => {
     // console.log('Headers:', req.headers);
-    console.log('Cookies:', req.cookies);
+    // console.log('Cookies:', req.cookies);
     next();
 });
 
@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 const verifyToken = (req, res, next) => {
 
     const token = req?.cookies?.token;
-    console.log("Token: ", token);
+    // console.log("Token: ", token);
 
     if (!token) {
         return res.status(401).send({ message: 'Unauthorized access' })
@@ -256,5 +256,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    // console.log(`Marathon running at: ${port}`);
+    console.log(`Marathon running at http://localhost:${port}`);
 });
